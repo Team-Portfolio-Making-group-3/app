@@ -24,6 +24,29 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.dispose();
   }
 
+  Route _fadeSlideRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionDuration: const Duration(milliseconds: 800),
+      reverseTransitionDuration: const Duration(milliseconds: 800),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        final fade = CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+        final slide = Tween<Offset>(
+          begin: const Offset(0, 0.3), // smoother start offset
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut));
+
+        return FadeTransition(
+          opacity: fade,
+          child: SlideTransition(
+            position: slide,
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,29 +73,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Route _fadeSlideRoute(Widget page) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionDuration: const Duration(milliseconds: 800),
-      reverseTransitionDuration: const Duration(milliseconds: 800),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final fade = CurvedAnimation(parent: animation, curve: Curves.easeInOut);
-        final slide = Tween<Offset>(
-          begin: const Offset(0, 0.3), // smoother start offset
-          end: Offset.zero,
-        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut));
-
-        return FadeTransition(
-          opacity: fade,
-          child: SlideTransition(
-            position: slide,
-            child: child,
-          ),
-        );
-      },
     );
   }
 }

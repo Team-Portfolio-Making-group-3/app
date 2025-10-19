@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app/screens/settings.dart';
-import 'package:app/screens/main_feature_screen.dart'; // Import your main feature screen
+import 'package:app/screens/main_feature_screen.dart';
+import 'package:app/widgets/customize_appbar.dart'; // Make sure this imports CustomAppBar // Yellow circular back button
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -14,47 +15,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // Hide Android navigation bar and status bar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
+      // Use the custom rounded blue AppBar
+      appBar: const CustomAppBar(),
       body: Column(
         children: [
-          // Rounded corner app bar
-          Container(
-            height: 120,
-            decoration: const BoxDecoration(
-              color: Color(0xFF004C85),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: const Center(
-              child: Text(
-                'Dashboard',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-
           const SizedBox(height: 30),
-
           // Top row with Settings and History buttons
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Settings button
                 _buildSquareButton(
                   icon: Icons.settings,
                   text: 'Settings',
@@ -66,8 +50,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },
                 ),
-
-                // History button
                 _buildSquareButton(
                   icon: Icons.history,
                   text: 'History',
@@ -78,10 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-
           const SizedBox(height: 30),
-
-          // Expanded main center widget that takes remaining space
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -93,7 +72,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Widget for square buttons (Settings and History)
   Widget _buildSquareButton({
     required IconData icon,
     required String text,
@@ -118,19 +96,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 85,
-              color: Colors.white,
-            ),
+            Icon(icon, size: 85, color: Colors.white),
             const SizedBox(height: 12),
             Text(
               text,
               style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+                  fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
             ),
           ],
         ),
@@ -138,11 +109,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Main center widget
   Widget _buildMainWidget(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigate to MainFeatureScreen
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const MainFeatureScreen()),
@@ -169,19 +138,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.touch_app,
-              size: 120,
-              color: Colors.white,
-            ),
+            Icon(Icons.touch_app, size: 120, color: Colors.white),
             SizedBox(height: 30),
             Text(
               'Tap to Get Started',
               style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+                  fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ],
         ),

@@ -1,5 +1,6 @@
 // File: lib/screens/settings_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'welcome_screen.dart';
 import 'about_screen.dart';
@@ -18,8 +19,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+    // Hide Android system UI (status bar & navigation bar)
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
     flutterTts.setLanguage("en-US");
     flutterTts.setPitch(1.0);
+  }
+
+  @override
+  void dispose() {
+    // Restore system UI when leaving screen
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
   }
 
   void _toggleTts(bool value) {
@@ -49,10 +60,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          // Rounded AppBar without extra whitespace
+          // Rounded AppBar
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            padding: const EdgeInsets.fromLTRB(16, 40, 16, 16), // includes status bar
             decoration: const BoxDecoration(
               color: Color(0xFF2C4B7A),
               borderRadius: BorderRadius.only(
@@ -83,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 16),
 
-          // Cards
+          // Settings cards
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -99,7 +110,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     activeColor: Colors.green,
                     inactiveThumbColor: Colors.grey,
                   ),
-                  isToggle: true, // toggles when card tapped
+                  isToggle: true,
                 ),
                 _buildSettingsOption(
                   color: Colors.grey[700]!,
