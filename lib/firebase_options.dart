@@ -1,16 +1,10 @@
 // File: lib/firebase_options.dart
-// ✅ Firebase configuration using environment variables
-
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
+    if (kIsWeb) return web;
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -29,60 +23,60 @@ class DefaultFirebaseOptions {
     }
   }
 
-  /// 🔹 Web configuration
-  static FirebaseOptions get web => FirebaseOptions(
-    apiKey: dotenv.env['WEB_API_KEY'] ?? '',
-    appId: dotenv.env['WEB_APP_ID'] ?? '',
-    messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
-    projectId: dotenv.env['PROJECT_ID'] ?? '',
-    authDomain: dotenv.env['WEB_AUTH_DOMAIN'] ?? '',
-    storageBucket: dotenv.env['WEB_STORAGE_BUCKET'] ?? '',
+  // 🔹 Web configuration
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'YOUR_WEB_API_KEY',
+    appId: 'YOUR_WEB_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    authDomain: 'YOUR_WEB_AUTH_DOMAIN',
+    storageBucket: 'YOUR_WEB_STORAGE_BUCKET',
   );
 
-  /// 🔹 Android configuration
-  static FirebaseOptions get android => FirebaseOptions(
-    apiKey: dotenv.env['ANDROID_API_KEY'] ?? '',
-    appId: dotenv.env['ANDROID_APP_ID'] ?? '',
-    messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
-    projectId: dotenv.env['PROJECT_ID'] ?? '',
-    storageBucket: dotenv.env['ANDROID_STORAGE_BUCKET'] ?? '',
+  // 🔹 Android configuration
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBD4qQw8oU2uRYRvzg_m549ciUN5EHxhJ0',
+    appId: '1:15462670899:android:216fab8792743483beb946',
+    messagingSenderId: '15462670899',
+    projectId: 'portfolio-making-group3',
+    storageBucket: 'portfolio-making-group3.firebasestorage.app',
   );
 
-  /// 🔹 iOS configuration
-  static FirebaseOptions get ios => FirebaseOptions(
-    apiKey: dotenv.env['IOS_API_KEY'] ?? '',
-    appId: dotenv.env['IOS_APP_ID'] ?? '',
-    messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
-    projectId: dotenv.env['PROJECT_ID'] ?? '',
-    storageBucket: dotenv.env['IOS_STORAGE_BUCKET'] ?? '',
-    iosClientId: dotenv.env['IOS_CLIENT_ID'] ?? '',
-    iosBundleId: dotenv.env['IOS_BUNDLE_ID'] ?? '',
+  // 🔹 iOS configuration
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'YOUR_IOS_API_KEY',
+    appId: 'YOUR_IOS_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_IOS_STORAGE_BUCKET',
+    iosClientId: 'YOUR_IOS_CLIENT_ID',
+    iosBundleId: 'YOUR_IOS_BUNDLE_ID',
   );
 
-  /// 🔹 macOS configuration
-  static FirebaseOptions get macos => FirebaseOptions(
-    apiKey: dotenv.env['MACOS_API_KEY'] ?? '',
-    appId: dotenv.env['MACOS_APP_ID'] ?? '',
-    messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
-    projectId: dotenv.env['PROJECT_ID'] ?? '',
-    storageBucket: dotenv.env['MACOS_STORAGE_BUCKET'] ?? '',
+  // 🔹 macOS configuration
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'YOUR_MACOS_API_KEY',
+    appId: 'YOUR_MACOS_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_MACOS_STORAGE_BUCKET',
   );
 
-  /// 🔹 Windows configuration
-  static FirebaseOptions get windows => FirebaseOptions(
-    apiKey: dotenv.env['WINDOWS_API_KEY'] ?? '',
-    appId: dotenv.env['WINDOWS_APP_ID'] ?? '',
-    messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
-    projectId: dotenv.env['PROJECT_ID'] ?? '',
-    storageBucket: dotenv.env['WINDOWS_STORAGE_BUCKET'] ?? '',
+  // 🔹 Windows configuration
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'YOUR_WINDOWS_API_KEY',
+    appId: 'YOUR_WINDOWS_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_WINDOWS_STORAGE_BUCKET',
   );
 
-  /// 🔹 Linux configuration
-  static FirebaseOptions get linux => FirebaseOptions(
-    apiKey: dotenv.env['LINUX_API_KEY'] ?? '',
-    appId: dotenv.env['LINUX_APP_ID'] ?? '',
-    messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? '',
-    projectId: dotenv.env['PROJECT_ID'] ?? '',
-    storageBucket: dotenv.env['LINUX_STORAGE_BUCKET'] ?? '',
+  // 🔹 Linux configuration
+  static const FirebaseOptions linux = FirebaseOptions(
+    apiKey: 'YOUR_LINUX_API_KEY',
+    appId: 'YOUR_LINUX_APP_ID',
+    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+    projectId: 'YOUR_PROJECT_ID',
+    storageBucket: 'YOUR_LINUX_STORAGE_BUCKET',
   );
 }
