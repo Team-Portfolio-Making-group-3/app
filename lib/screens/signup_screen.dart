@@ -170,68 +170,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-              ),
-              child: ListView(
-                children: [
-                  const SizedBox(height: 20),
-                  const Text("Name", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            child: Stack(
+              children: [
+                // White card container
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                  ),
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 40), // extra space for back button
+                      const Text("Name", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text("Email", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          hintText: "username@gmail.com",
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text("Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                          suffixIcon: const Icon(Icons.visibility_off),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text("Confirm Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Confirm Password",
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                          suffixIcon: const Icon(Icons.visibility_off),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        onPressed: _isLoading ? null : _signUp,
+                        child: _isLoading
+                            ? const CircularProgressIndicator()
+                            : const Text("Sign Up"),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Yellow circular back button
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Color(0xFFFDC843),
+                      child: Icon(Icons.arrow_back, color: Colors.white),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const Text("Email", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      hintText: "username@gmail.com",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      suffixIcon: const Icon(Icons.visibility_off),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("Confirm Password", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  TextField(
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "Confirm Password",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                      suffixIcon: const Icon(Icons.visibility_off),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: _isLoading ? null : _signUp,
-                    child: _isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text("Sign Up"),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

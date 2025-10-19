@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/customize_appbar.dart';
 import '../widgets/history_list_widget.dart';
 
+
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 

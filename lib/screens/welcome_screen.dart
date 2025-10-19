@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'auth_option_screen.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -52,7 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(_fadeSlideRoute(const LoginScreen()));
+          Navigator.of(context).push(_fadeSlideRoute( AuthOptionScreen()));
         },
         child: Container(
           color: const Color(0xFF004E89), // exact blue background

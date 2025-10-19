@@ -8,7 +8,7 @@ class BackButtonWidget extends StatelessWidget {
     return Material(
       shape: const CircleBorder(),
       color: Colors.yellow,
-      elevation: 4,
+      elevation: 2,
       child: InkWell(
         customBorder: const CircleBorder(),
         onTap: () {
@@ -19,7 +19,7 @@ class BackButtonWidget extends StatelessWidget {
           child: Icon(
             Icons.arrow_back,
             color: Colors.white,
-            size: 30,
+            size: 20,
           ),
         ),
       ),

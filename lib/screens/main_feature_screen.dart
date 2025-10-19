@@ -4,6 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:vibration/vibration.dart';
+import '../widgets/customize_appbar.dart';
+import 'map_screen.dart';
 
 
 class MainFeatureScreen extends StatefulWidget {
@@ -186,7 +188,7 @@ class _MainFeatureScreenState extends State<MainFeatureScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final cameraHeight = screenHeight * 0.8;
+    final cameraHeight = screenHeight * 0.65;
     final buttonSize = 70.0;
 
     if (!isCameraInitialized || _cameraController == null) {
@@ -196,41 +198,10 @@ class _MainFeatureScreenState extends State<MainFeatureScreen> {
     }
 
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          // AppBar
-          Container(
-            padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
-            decoration: const BoxDecoration(
-              color: Color(0xFF2C4B7A),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xFFFDC843),
-                    child: Icon(Icons.arrow_back, color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                const Text(
-                  "Main Features",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-
           // Camera preview with overlay buttons
           Expanded(
             child: Padding(
@@ -268,7 +239,7 @@ class _MainFeatureScreenState extends State<MainFeatureScreen> {
 
                   // Feature buttons inside camera
                   Positioned(
-                    bottom: 20,
+                    bottom: 150,
                     left: 0,
                     right: 0,
                     child: Row(
@@ -278,7 +249,12 @@ class _MainFeatureScreenState extends State<MainFeatureScreen> {
                           icon: Icons.map,
                           label: "Map",
                           color: Colors.blue[700]!,
-                          onTap: () => launchUrl(Uri.parse('https://www.google.com/maps')),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const MapScreen()),
+                            );
+                          },
                           size: buttonSize,
                         ),
                         _buildFeatureButton(

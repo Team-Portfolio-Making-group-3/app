@@ -1,9 +1,10 @@
 // File: lib/screens/settings_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import '../widgets/customize_appbar.dart';
 import 'welcome_screen.dart';
 import 'about_screen.dart';
+import '../service/tts_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -13,88 +14,61 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool isTtsOn = false;
-  final FlutterTts flutterTts = FlutterTts();
+  bool isTtsOn = true;
 
   @override
   void initState() {
     super.initState();
-    // Hide Android system UI (status bar & navigation bar)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-    flutterTts.setLanguage("en-US");
-    flutterTts.setPitch(1.0);
+    // Initialize TTS
+    TtsService.instance.init().then((_) {
+      setState(() {
+        isTtsOn = TtsService.instance.isTtsOn;
+      });
+    });
   }
 
   @override
   void dispose() {
-    // Restore system UI when leaving screen
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
 
-  void _toggleTts(bool value) {
+  void _toggleTts(bool value) async {
     setState(() {
       isTtsOn = value;
     });
-    if (isTtsOn) {
-      flutterTts.speak("Text to Speech is turned on");
+    await TtsService.instance.setTtsEnabled(value);
+
+    if (value) {
+      await TtsService.instance.speak("Text to Speech is turned on");
     } else {
-      flutterTts.stop();
+      await TtsService.instance.stop();
     }
   }
 
-  void _logout() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-          (route) => false,
-    );
+  void _logout() async {
+    await TtsService.instance.speak("Logging out");
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+            (route) => false,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final double cardHeight = 120;
+    const double cardHeight = 120;
 
     return Scaffold(
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          // Rounded AppBar
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(16, 40, 16, 16), // includes status bar
-            decoration: const BoxDecoration(
-              color: Color(0xFF2C4B7A),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xFFFDC843),
-                    child: Icon(Icons.arrow_back, color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                const Text(
-                  "Settings",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Settings cards
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -118,6 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: "About",
                   height: cardHeight,
                   onTap: () {
+                    TtsService.instance.speak("Opening About Page");
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const AboutScreen()),
@@ -153,6 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (isToggle) {
           _toggleTts(!isTtsOn);
         } else if (onTap != null) {
+          TtsService.instance.speak("Opening $title");
           onTap();
         }
       },
@@ -189,16 +165,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 title,
                 style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            if (trailingWidget != null)
-              trailingWidget
-            else
-              const Padding(
-                padding: EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.arrow_forward_ios),
-              ),
+            trailingWidget ??
+                const Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.arrow_forward_ios),
+                ),
           ],
         ),
       ),
