@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "15462670899",
+    "project_id": "portfolio-making-group3",
+    "storage_bucket": "portfolio-making-group3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15462670899:android:216fab8792743483beb946",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD4qQw8oU2uRYRvzg_m549ciUN5EHxhJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
