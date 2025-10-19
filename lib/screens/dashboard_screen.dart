@@ -1,3 +1,4 @@
+import 'package:app/screens/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app/screens/settings.dart';
@@ -54,7 +55,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   icon: Icons.history,
                   text: 'History',
                   onTap: () {
-                    // Handle history tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HistoryScreen()),
+                    );
                   },
                 ),
               ],
