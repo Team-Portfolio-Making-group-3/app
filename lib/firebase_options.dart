@@ -25,12 +25,11 @@ class DefaultFirebaseOptions {
 
   // 🔹 Web configuration
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'YOUR_WEB_API_KEY',
-    appId: 'YOUR_WEB_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-    projectId: 'YOUR_PROJECT_ID',
-    authDomain: 'YOUR_WEB_AUTH_DOMAIN',
-    storageBucket: 'YOUR_WEB_STORAGE_BUCKET',
+    apiKey: 'AIzaSyBD4qQw8oU2uRYRvzg_m549ciUN5EHxhJ0',
+    appId: '1:15462670899:web:4f94c2f0249afff4beb946',
+    messagingSenderId: '15462670899',
+    projectId: 'portfolio-making-group3',
+    storageBucket: 'portfolio-making-group3.firebasestorage.app',
   );
 
   // 🔹 Android configuration
