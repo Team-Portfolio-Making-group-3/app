@@ -70,7 +70,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                       const SizedBox(width: 6), // small space between image and text
                       const Text(
-                        "Luma",
+                        "Lumo",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 28,

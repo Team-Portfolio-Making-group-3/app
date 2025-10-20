@@ -1,5 +1,5 @@
 name: lumo
-description: "A new Flutter project."
+description: "Lumo - AI Disaster Preparedness Assistant"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -18,21 +18,30 @@ dependencies:
   firebase_auth: ^5.1.2
   url_launcher: ^6.1.12
   google_sign_in: ^6.1.0
-  flutter_tts: ^4.2.3
+  flutter_tts: ^4.0.2
+  device_info_plus: ^10.1.0
 
-  # Environment variables
-  flutter_dotenv: ^6.0.0
 
-  # Cupertino icons
-  cupertino_icons: ^1.0.8
+  # Camera, AI, and Voice
   camera: ^0.11.2
   flutter_vision: ^2.0.0
   vibration: ^2.0.0
-  google_maps_flutter: ^2.13.1
   speech_to_text: ^7.3.0
   http: ^1.5.0
-  geolocator: ^14.0.2
+
+  # Maps & Location
+  google_maps_flutter: ^2.13.1
+  geolocator: ^14.0.1
   flutter_polyline_points: ^3.1.0
+
+  # Notifications
+  flutter_local_notifications: ^17.1.2
+
+  # Icon generator
+  flutter_launcher_icons: ^0.14.1
+
+  # Cupertino icons
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
@@ -42,7 +51,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Add your image assets here
   assets:
     - assets/images/
     - assets/models/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/luma.PNG"
+  min_sdk_android: 21

@@ -1,8 +1,8 @@
 import 'history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'settings.dart';
-import 'main_feature_screen.dart';
+import 'settings/settings.dart';
+import 'features/main_feature_screen.dart';
 import '../widgets/customize_appbar.dart';
 import '../service/tts_service.dart'; // <-- Import global TTS service
 
@@ -19,11 +19,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+    // Hide Android navbar completely
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+      overlays: [], // <-- hides both status bar and navigation bar
+    );
   }
 
   @override
   void dispose() {
+    // Restore default system UI overlays when leaving the screen
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
@@ -44,8 +50,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildSquareButton(
-                      icon: Icons.settings,
+                      iconPath: "assets/images/settings-icon.png",
                       text: 'Settings',
+                      iconSize: 100,
                       onTap: () {
                         TtsService.instance.speak("You're clicking Settings");
                         Navigator.push(
@@ -56,8 +63,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                     ),
                     _buildSquareButton(
-                      icon: Icons.history,
+                      iconPath: "assets/images/history-icon.png",
                       text: 'History',
+                      iconSize: 100,
                       onTap: () {
                         TtsService.instance.speak("You're clicking History");
                         Navigator.push(
@@ -70,6 +78,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
+
               // Main "Tap to Get Started" button
               Expanded(
                 child: Padding(
@@ -96,17 +105,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Reusable square button with TTS
+  // Reusable square button with PNG icon
   Widget _buildSquareButton({
-    required IconData icon,
+    required String iconPath,
     required String text,
     required VoidCallback onTap,
+    double iconSize = 85,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 170,
-        height: 170,
+        height: 190,
         decoration: BoxDecoration(
           color: const Color(0xFF004C85),
           borderRadius: BorderRadius.circular(20),
@@ -121,7 +131,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 85, color: Colors.white),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Image.asset(
+                iconPath,
+                width: iconSize,
+                height: iconSize,
+                fit: BoxFit.contain,
+              ),
+            ),
             const SizedBox(height: 12),
             Text(
               text,
@@ -134,7 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Main feature button with loading
+  // Main feature button with PNG icon and loading overlay
   Widget _buildMainWidget(BuildContext context) {
     return GestureDetector(
       onTap: _isLoadingMain
@@ -143,16 +161,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         setState(() => _isLoadingMain = true);
         TtsService.instance.speak("Clicking to get started");
 
-        double progress = 0.0; // Track model progress
+        double progress = 0.0;
 
-        // Example: simulate a feature with progress updates
-        // Replace this with your real model execution logic
         while (progress < 1.0) {
           await Future.delayed(const Duration(milliseconds: 300));
           progress += 0.1;
-
           if (!mounted) return;
-          setState(() {}); // Trigger rebuild to update loading UI
+          setState(() {});
         }
 
         if (!mounted) return;
@@ -165,7 +180,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: Stack(
         children: [
-          // Main button
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -184,12 +198,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 width: 3,
               ),
             ),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.touch_app, size: 120, color: Colors.white),
-                SizedBox(height: 30),
-                Text(
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.asset(
+                    "assets/images/logo_white.PNG",
+                    width: 180,
+                    height: 180,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                const Text(
                   'Tap to Get Started',
                   style: TextStyle(
                       fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
@@ -197,8 +219,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-
-          // Dynamic loading overlay
           if (_isLoadingMain)
             Positioned.fill(
               child: Container(

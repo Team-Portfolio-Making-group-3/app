@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HistoryListContainer extends StatelessWidget {
   const HistoryListContainer({super.key});
@@ -13,36 +14,76 @@ class HistoryListContainer extends StatelessWidget {
           topRight: Radius.circular(20),
         ),
       ),
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: const [
-          HistoryItem(
-            address: 'Address., lorem ipsum rorororor',
-          ),
-          SizedBox(height: 12),
-          HistoryItem(
-            address: 'Address., lorem ipsum rorororor',
-          ),
-          SizedBox(height: 12),
-          HistoryItem(
-            address: 'Address., lorem ipsum rorororor',
-          ),
-          SizedBox(height: 12),
-          HistoryItem(
-            address: 'Address., lorem ipsum rorororor',
-          ),
-        ],
+
+      /// ✅ Firestore StreamBuilder
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('saved_locations')
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          // Loading state
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          // Empty state
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: Text(
+                  "No saved locations yet.",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          // ✅ Build list of history items
+          final docs = snapshot.data!.docs;
+
+          return ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: docs.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final data = docs[index].data() as Map<String, dynamic>;
+              final name = data['name'] ?? 'Unnamed Location';
+              final address = data['address'] ?? 'No address';
+              final timestamp = data['timestamp'] != null
+                  ? (data['timestamp'] as Timestamp).toDate()
+                  : null;
+
+              return HistoryItem(
+                locationName: name,
+                address: address,
+                timestamp: timestamp,
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
 
 class HistoryItem extends StatelessWidget {
+  final String locationName;
   final String address;
+  final DateTime? timestamp;
 
   const HistoryItem({
     super.key,
+    required this.locationName,
     required this.address,
+    this.timestamp,
   });
 
   @override
@@ -61,7 +102,7 @@ class HistoryItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Big location icon
+          // Icon container
           Container(
             width: 50,
             height: 50,
@@ -76,12 +117,14 @@ class HistoryItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
+
+          // Location details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Location 1',
+                  locationName,
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -96,6 +139,16 @@ class HistoryItem extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
+                if (timestamp != null) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    "Saved on ${timestamp!.toLocal()}",
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
