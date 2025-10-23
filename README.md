@@ -196,6 +196,8 @@ handleDetections(detections);
 
 ---
 
+
+
 ## 💬 Example User Scenario
 
 Maria, a visually impaired user, attaches her phone to the GuideWay stick and begins her morning walk:
